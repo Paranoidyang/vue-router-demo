@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>demo1</title>
+		<!-- 1.引入vue、vue-router-->
+		<script type="text/javascript" src="js/vue(2.0).js"></script>
+		<script type="text/javascript" src="js/vue-router(2.0).js"></script>
+		<style>
+			.my-active{
+				color: red;
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<h1>Hello World!</h1>
+			<p>
+				<!-- 使用 router-link 组件来导航. -->
+				<!-- 通过传入 `to` 属性指定链接. -->
+				<!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+				<!--创建跳转的触发链接 -->
+				<router-link to="/" exact >Go to home</router-link>
+				<router-link to="/news">Go to news</router-link>
+				<router-link to="/about">Go to about</router-link>
+			</p>
+			<!-- 路由出口 -->
+			<!-- 路由匹配到的组件将渲染在这里 -->
+			<!--创建触发后页面显示的位置出口-->
+			<router-view></router-view>
+		</div>
+		<script>
+			//2.定义组件。
+				// ‘const’ 是ES6的新的声明，也可以使用‘var’
+				const home = { template: '<div>this is home page</div>' }
+				const news = { template: '<div>this is news page</div>' }
+				const about = { template: '<div>this is about page</div>' }
+			//3.定义路由，创建与组件的映射关系 
+				const routes = [
+				{ path: '/', component: home},
+				{ path: '/news', component: news},
+				{ path: '/about', component: about},
+				]
+			//4.创建router实例，传入定义的路由
+				const router = new VueRouter({
+				routes, // （缩写）相当于 routes: routes
+				linkActiveClass:"my-active",//<router-link>被激活时为其添加一个class,这个类名叫my-active
+				})
+			//5.创建Vue对象并且挂载router到根实例。
+				const app = new Vue({
+				router
+				}).$mount('#app')
+		</script>
+	</body>
+</html>

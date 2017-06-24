@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>demo4-动态路由匹配</title>
+		<!-- 1.引入vue、vue-router-->
+		<script type="text/javascript" src="js/vue(2.0).js"></script>
+		<script type="text/javascript" src="js/vue-router(2.0).js"></script>
+		<style>
+			.my-ctive{
+				color: red;
+				font-weight: 600;
+			}
+			.fade-enter-active, .fade-leave-active {
+			transition: opacity .5s ease;
+			}
+			.fade-enter, .fade-leave-active {
+			opacity: 0
+			}
+			.child-view {
+			position: absolute;
+			transition: all .5s cubic-bezier(.55,0,.1,1);
+			}
+			.slide-left-enter, .slide-right-leave-active {
+			opacity: 0;
+			-webkit-transform: translate(30px, 0);
+			transform: translate(30px, 0);
+			}
+			.slide-left-leave-active, .slide-right-enter {
+			opacity: 0;
+			-webkit-transform: translate(-30px, 0);
+			transform: translate(-30px, 0);
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<h1>Hello World!</h1>
+			<p>
+				<!-- 使用 router-link 组件来导航. -->
+				<!-- 通过传入 `to` 属性指定链接. -->
+				<!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+				<!--创建跳转的触发链接 -->
+				<router-link to="/user/user1" exact >user1</router-link>
+				<router-link to="/user/user2">user2</router-link>
+				<router-link to="/user/user3">user3</router-link>
+			</p>
+			<!-- 路由出口 -->
+			<!-- 路由匹配到的组件将渲染在这里 -->
+			<!-- transition添加过渡效果 -->
+			<!--创建触发后页面显示的位置出口-->
+			<transition name="fade"  mode="out-in">
+				<router-view></router-view>
+			</transition>
+		</div>
+		<script>
+			const User = {
+					template: '<div>User {{ $route.params.id }}</div>'
+				}
+				//从 /user/user1导航到 user/user2，原来的组件实例会被复用。因为两个路由都渲染同个组件，比起销毁再创建，复用则显得更加高效。不过，这也意味着组件的生命周期钩子不会再被调用。
+			const router = new VueRouter({
+				routes: [
+					// 动态路径参数 以冒号开头
+					{
+						path: '/user/:id',
+						component: User
+					}
+				]
+			})
+			const app = new Vue({
+				router,
+				data() {
+					return {
+						fade: "fade"
+					}
+				}
+			}).$mount('#app')
+		</script>
+	</body>
+</html>
