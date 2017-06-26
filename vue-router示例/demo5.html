@@ -3,51 +3,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Vuex状态管理器</title>
+  <title>Vuex2.0状态管理器</title>
 <script src="http://cdn.bootcss.com/vue/1.0.26/vue.min.js"></script>
-<script src="http://cdn.bootcss.com/vuex/0.8.2/vuex.min.js"></script>
+<script src="http://cdn.bootcss.com/vuex/2.0.0/vuex.min.js"></script>
 </head>
 <body>
-  <!-- 2、view，映射到视图的数据counterValue； -->
-  <h3>Count is {{ counterValue }}</h3>
-  <div>
-    <button @click="increment">Increment +1</button>
-    <button @click="decrement">Decrement -1</button>
-  </div>
-</body>
+  <div id="app">
+  <p>{{ count }}</p>
+  <p>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+  </p>
+</div>
+
 <script>
-var app = new Vue({
-  el: 'body',
-  store: new Vuex.Store({
-    // 1、state，驱动应用的数据源；
-    state: {
-      count: 0
-    },
-    mutations: {
-      INCREMENT: function(state, amount) {
-        state.count = state.count + amount
-      },
-      DECREMENT: function(state, amount) {
-        state.count = state.count - amount
-      }
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment: state => state.count++,
+    decrement: state => state.count--
+  }
+})
+
+new Vue({
+  el: '#app',
+  computed: {
+    count () {
+      return store.state.count
     }
-  }),
-  vuex: {
-    getters: {
-      counterValue: function(state) {
-        return state.count
-      }
+  },
+  methods: {
+    increment () {
+      store.commit('increment')
     },
-    // 3、actions，响应在view上的用户输入导致的状态变化。
-    actions: {
-      increment: function({ dispatch, state }){
-        dispatch('INCREMENT', 1)
-      },
-      decrement: function({ dispatch, state }){
-        dispatch('DECREMENT', 1)
-      }
+    decrement () {
+      store.commit('decrement')
     }
   }
 })
 </script>
+</body>
 </html>
